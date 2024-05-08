@@ -2,7 +2,27 @@ import { useState } from 'react';
 import './App.css';
 
 function TaskList({ tasks, setTasks }) {
-  const listItems = tasks.map((task) => <li key={task.id}>{task.name}</li>);
+  const deleteHandler = (task) => {
+    setTasks(tasks.filter((cur) => cur !== task));
+  };
+
+  const finishedHandler = (task) => {
+    const ntasks = tasks.map((cur) =>
+      cur === task ? { ...task, todo: !task.todo } : cur
+    );
+    console.log(tasks, ntasks);
+    setTasks(ntasks);
+  };
+
+  const listItems = tasks.map((task) => (
+    <li key={task.id}>
+      {task.name}{' '}
+      <button onClick={() => finishedHandler(task)}>
+        {task.todo ? 'Mark as done' : 'Mark as not done'}
+      </button>{' '}
+      <button onClick={() => deleteHandler(task)}>Delete</button>{' '}
+    </li>
+  ));
   return <ul>{listItems}</ul>;
 }
 
@@ -13,6 +33,7 @@ function AddComp({ tasks, setTasks }) {
     e.preventDefault();
     const id = tasks.length > 0 ? tasks[tasks.length - 1].id + 1 : 0;
     setTasks([...tasks, { id, name }]);
+    setName('');
   };
 
   return (
@@ -34,8 +55,8 @@ function AddComp({ tasks, setTasks }) {
 
 function App() {
   const [tasks, setTasks] = useState([
-    { id: 0, name: 'task A' },
-    { id: 1, name: 'task B' },
+    { id: 0, name: 'task A', todo: true },
+    { id: 1, name: 'task B', todo: true },
   ]);
 
   return (
