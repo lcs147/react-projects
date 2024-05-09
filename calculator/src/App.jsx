@@ -5,7 +5,8 @@ import './App.css';
 function App() {
   const [expression, setExpression] = useState('');
   const [answer, setAnswer] = useState('');
-  const handleSubmit = (e) => {
+
+  const handleSubmit = () => {
     try {
       setAnswer(math.evaluate(expression));
     } catch (error) {
